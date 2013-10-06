@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIFont (Replacement)
+@interface UIFont (Replacement7)
 
-+ (NSDictionary *) replacementDictionary;
-+ (void) setReplacementDictionary:(NSDictionary *)aReplacementDictionary;
++ (NSDictionary *) replacementDictionary7;
++ (void) setReplacementDictionary7:(NSDictionary *)aReplacementDictionary;
 
 @end
