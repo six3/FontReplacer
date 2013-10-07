@@ -6,23 +6,23 @@
 //  Copyright (c) 2011 Cédric Luthi. All rights reserved.
 //
 
-#import "UIFont+Replacement7.h"
+#import "UIFont+Replacement.h"
 #import <objc/runtime.h>
 
-@implementation UIFont (Replacement7)
+@implementation UIFont (Replacement)
 
-static NSDictionary *replacementDictionary7 = nil;
+static NSDictionary *replacementDictionary = nil;
 
-static void initializeReplacementFonts7()
+static void initializeReplacementFonts()
 {
-	if (replacementDictionary7)
+	if (replacementDictionary)
 		return;
     
 	NSDictionary *replacementDictionary = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ReplacementFonts"];
-	[UIFont setReplacementDictionary7:replacementDictionary];
+	[UIFont setReplacementDictionary:replacementDictionary];
 }
 
-+ (void) load7
++ (void) load
 {
 	Method fontWithName_size_ = class_getClassMethod([UIFont class], @selector(fontWithName:size:));
 	Method fontWithName_size_traits_ = class_getClassMethod([UIFont class], @selector(fontWithName:size:traits:));
@@ -41,34 +41,34 @@ static void initializeReplacementFonts7()
     }
 }
 
-+ (UIFont *) replacement_fontWithName7:(NSString *)fontName size:(CGFloat)fontSize
++ (UIFont *) replacement_fontWithName:(NSString *)fontName size:(CGFloat)fontSize
 {
-	initializeReplacementFonts7();
-	NSString *replacementFontName = [replacementDictionary7 objectForKey:fontName];
-	return [self replacement_fontWithName7:replacementFontName ?: fontName size:fontSize];
+	initializeReplacementFonts();
+	NSString *replacementFontName = [replacementDictionary objectForKey:fontName];
+	return [self replacement_fontWithName:replacementFontName ?: fontName size:fontSize];
 }
 
-+ (UIFont *) replacement_fontWithName7:(NSString *)fontName size:(CGFloat)fontSize traits:(int)traits
++ (UIFont *) replacement_fontWithName:(NSString *)fontName size:(CGFloat)fontSize traits:(int)traits
 {
-	initializeReplacementFonts7();
-	NSString *replacementFontName = [replacementDictionary7 objectForKey:fontName];
-	return [self replacement_fontWithName7:replacementFontName ?: fontName size:fontSize traits:traits];
+	initializeReplacementFonts();
+	NSString *replacementFontName = [replacementDictionary objectForKey:fontName];
+	return [self replacement_fontWithName:replacementFontName ?: fontName size:fontSize traits:traits];
 }
 
-+ (UIFont *) replacement_fontWithDescriptor7:(UIFontDescriptor*)descriptor size:(CGFloat)fontSize{
-    initializeReplacementFonts7();
-	NSString *replacementFontName = [replacementDictionary7 objectForKey:[descriptor.fontAttributes objectForKey:UIFontDescriptorNameAttribute]];
-    return [self replacement_fontWithDescriptor7:[UIFontDescriptor fontDescriptorWithName:replacementFontName ?: [descriptor.fontAttributes objectForKey:UIFontDescriptorNameAttribute] size:fontSize] size:fontSize];
++ (UIFont *) replacement_fontWithDescriptor:(UIFontDescriptor*)descriptor size:(CGFloat)fontSize{
+    initializeReplacementFonts();
+	NSString *replacementFontName = [replacementDictionary objectForKey:[descriptor.fontAttributes objectForKey:UIFontDescriptorNameAttribute]];
+    return [self replacement_fontWithDescriptor:[UIFontDescriptor fontDescriptorWithName:replacementFontName ?: [descriptor.fontAttributes objectForKey:UIFontDescriptorNameAttribute] size:fontSize] size:fontSize];
 }
 
-+ (NSDictionary *) replacementDictionary7
++ (NSDictionary *) replacementDictionary
 {
-	return replacementDictionary7;
+	return replacementDictionary;
 }
 
-+ (void) setReplacementDictionary7:(NSDictionary *)aReplacementDictionary
++ (void) setReplacementDictionary:(NSDictionary *)aReplacementDictionary
 {
-	if (aReplacementDictionary == replacementDictionary7)
+	if (aReplacementDictionary == replacementDictionary)
 		return;
     
 	for (id key in [aReplacementDictionary allKeys])
@@ -87,12 +87,12 @@ static void initializeReplacementFonts7()
 		}
 	}
     
-	[replacementDictionary7 release];
-	replacementDictionary7 = [aReplacementDictionary retain];
+	[replacementDictionary release];
+	replacementDictionary = [aReplacementDictionary retain];
     
-	for (id key in [replacementDictionary7 allKeys])
+	for (id key in [replacementDictionary allKeys])
 	{
-		NSString *fontName = [replacementDictionary7 objectForKey:key];
+		NSString *fontName = [replacementDictionary objectForKey:key];
 		UIFont *font = [UIFont fontWithName:fontName size:10];
 		if (!font)
 			NSLog(@"WARNING: replacement font '%@' is not available.", fontName);
